@@ -11,10 +11,12 @@ function partitionBooksByBorrowedStatus(books) {
   // array 1: checked out books
   // array 2: returned books
   const checkedOut = books.filter((book) => {
-    if (!book.borrows[0].returned) return book;
+    const { returned: status } = book.borrows[0];
+    if (!status) return book;
   });
   const returned = books.filter((book) => {
-    if (book.borrows[0].returned) return book;
+    const { returned: status } = book.borrows[0];
+    if (status) return book;
   });
   
   return [checkedOut, returned];
@@ -29,7 +31,7 @@ function getBorrowersForBook(book, accounts) {
     let account = accounts.find(acc => {
       return acc.id === id;
     });
-    // return account info plus return status.
+    // return account info plus return status to array.
     borrowers.push({...account, returned});
   });
 
